@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import CurrencyFormat from 'react-currency-format';
 
 function App() {
   const [data, setData] = useState([]);   
@@ -165,7 +166,7 @@ function App() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPrice">
               <Form.Label>Set Price</Form.Label><br></br>
-              <Form.Control value={price} name="price" type="text" onChange={(e) => setPrice(e.target.value)} placeholder="Set Price in Rp. " />                      
+              <CurrencyFormat value={price} name="price" thousandSeparator={true} prefix={'Rp. '} onChange={(e) => setPrice(e.target.value)} placeholder="Set Price in Rp. " />                      
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicDesc">
               <Form.Label>Description</Form.Label>          
@@ -195,7 +196,7 @@ function App() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPrice">
               <Form.Label>Set Price</Form.Label><br></br>        
-              <Form.Control value={priceEdit} name="price" type="text" onChange={(e) => editPrice(e.target.value)} placeholder="Set Price in Rp. " />
+              <CurrencyFormat value={priceEdit} name="price" thousandSeparator={true} prefix={'Rp. '} onChange={(e) => editPrice(e.target.value)} placeholder="Set Price in Rp. " />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicDesc">
               <Form.Label>Description</Form.Label>          
