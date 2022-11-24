@@ -135,7 +135,7 @@ function App() {
               <td>{index + 1}</td>
               <td>{item.name}</td>
               <td>
-                <img src={item.image} alt="Cardfight Vanguard"></img>
+                <img src={item.image} alt={item.name}></img>
               </td>
               <td>{item.price}</td>
               <td>{item.description}</td>
