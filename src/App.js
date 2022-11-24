@@ -59,6 +59,18 @@ function App() {
         getData()
       });
   }
+
+  const handleDelete = (id) => {
+    if (window.confirm(`Delete ID ${id}?`)) {
+      Axios({
+        method: 'post',
+        url: `http://localhost:7777/product/delete/${id}`,
+      })
+        .then(function (response) {
+          getData()
+        });
+    }
+  }
   
   useEffect(() => {
     getData()
@@ -90,7 +102,7 @@ function App() {
               <td>{item.description}</td>
               <td><ButtonGroup aria-label="Action">
                 <Button size="sm" variant="primary">Edit</Button>
-                <Button size="sm" variant="danger">Delete</Button>
+                <Button size="sm" variant="danger" onClick={() => handleDelete(item.id)}>Delete</Button>
               </ButtonGroup></td>
             </tr>
           })}
