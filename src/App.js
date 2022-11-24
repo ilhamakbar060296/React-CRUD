@@ -15,7 +15,15 @@ function App() {
   const [price, setPrice] = useState('');      
   const [add, setAdd] = useState(false);
   const addClose = () => setAdd(false);
-  const addShow = () => setAdd(true);     
+  const addShow = () => setAdd(true);
+  
+  const [nameEdit, editName] = useState('');
+  const [descEdit, editDesc] = useState('');
+  const [imageEdit, editImage] = useState('');
+  const [priceEdit, editPrice] = useState('');      
+  const [edit, setEdit] = useState(false);
+  const editClose = () => setEdit(false);
+  const editShow = (id) => setEdit(id);
 
   const getData = () => {
     Axios({
@@ -25,6 +33,15 @@ function App() {
       .then(function (response) {
         setData(response.data.data)
       });
+  }
+
+  const getIdData = (id) =>{
+    let item = data.find(x => x.id === id);
+    editShow(id);
+    editName(item.name);
+    editDesc(item.description);
+    editImage(item.image);
+    editPrice(item.price);
   }
 
   const makeID = (length) =>{
@@ -56,6 +73,27 @@ function App() {
         setDesc('')
         setImage('')
         setPrice('')
+        getData()
+      });
+  }
+
+  const handleEdit = () => {
+    Axios({
+      method: 'put',
+      url: `http://localhost:7777/product/${edit}`,
+      data: {
+        name: nameEdit,
+        description: descEdit,
+        image: imageEdit,
+        price: priceEdit
+      }
+    })
+      .then(function (response) {
+        addClose()
+        setName('')
+        setDesc('')
+        setImage('')
+        setPrice('')        
         getData()
       });
   }
@@ -101,7 +139,7 @@ function App() {
               <td>{item.price}</td>
               <td>{item.description}</td>
               <td><ButtonGroup aria-label="Action">
-                <Button size="sm" variant="primary">Edit</Button>
+              <Button size="sm" variant="primary" onClick={() => getIdData(item.id)}>Edit</Button>
                 <Button size="sm" variant="danger" onClick={() => handleDelete(item.id)}>Delete</Button>
               </ButtonGroup></td>
             </tr>
@@ -137,6 +175,39 @@ function App() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleAdd}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={edit} onHide={editClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control value={nameEdit} type="text" onChange={(e) => editName(e.target.value)} placeholder="Enter name" />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicImage">
+              <Form.Label>Image URL</Form.Label>
+              <Form.Control value={imageEdit} name="image" type="text" onChange={(e) => editImage(e.target.value)} placeholder="Place Image URL" />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPrice">
+              <Form.Label>Set Price</Form.Label><br></br>        
+              <Form.Control value={priceEdit} name="price" type="text" onChange={(e) => editPrice(e.target.value)} placeholder="Set Price in Rp. " />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicDesc">
+              <Form.Label>Description</Form.Label>          
+              <Form.Control rows="5" value={descEdit} name="desc" as="textarea" aria-label="With textarea" onChange={(e) => editDesc(e.target.value)} placeholder="Write Product Description Here"/>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={editClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleEdit}>
             Save Changes
           </Button>
         </Modal.Footer>
